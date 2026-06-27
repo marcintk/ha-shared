@@ -1,4 +1,4 @@
-# ha-shared
+# ha-card-shared
 
 Shared build toolchain for `ha-*` Home Assistant card projects: TypeScript, Rollup, Vitest, Biome,
 and Prettier configs, plus reusable GitHub Actions workflows and git hooks.
@@ -9,7 +9,7 @@ Always pin to a release tag — never a bare SHA or `main`. Updating is the same
 tag (dependabot does it for you once pinned).
 
 ```bash
-npm install github:marcintk/ha-shared#v1.0.0 --save-dev
+npm install github:marcintk/ha-card-shared#v1.0.0 --save-dev
 ```
 
 The exported configs expect these tools installed in the consumer (declared as peer deps): `rollup`
@@ -22,12 +22,12 @@ Use each export by extending or referencing it from the matching consumer file:
 
 | Export | Wire-up in consumer |
 |---|---|
-| `ha-shared/tsconfig.base.json` | `"extends"` in `tsconfig.json` |
-| `ha-shared/rollup.base.mjs` | `export default cardBundle()` in `rollup.config.mjs` |
-| `ha-shared/vitest.base.mjs` | `defineConfig(baseVitestConfig)` in `vitest.config.mjs` |
-| `ha-shared/biome.json` | `"extends"` in `biome.json` |
-| `ha-shared/prettier.config.json` | `"prettier": "ha-shared/prettier.config.json"` in `package.json` |
-| `ha-shared/globals.d.ts` | `/// <reference path="../node_modules/ha-shared/globals.d.ts" />` in `src/index.ts` |
+| `ha-card-shared/tsconfig.base.json` | `"extends"` in `tsconfig.json` |
+| `ha-card-shared/rollup.base.mjs` | `export default cardBundle()` in `rollup.config.mjs` |
+| `ha-card-shared/vitest.base.mjs` | `defineConfig(baseVitestConfig)` in `vitest.config.mjs` |
+| `ha-card-shared/biome.json` | `"extends"` in `biome.json` |
+| `ha-card-shared/prettier.config.json` | `"prettier": "ha-card-shared/prettier.config.json"` in `package.json` |
+| `ha-card-shared/globals.d.ts` | `/// <reference path="../node_modules/ha-card-shared/globals.d.ts" />` in `src/index.ts` |
 
 `cardBundle` bundles `src/index.ts` → `dist/card.js` and stamps `__CARD_VERSION__` from the
 `VERSION` env (set from the git tag at release; `0.0.0-dev` otherwise; `"test"` under vitest).
@@ -36,7 +36,7 @@ Use each export by extending or referencing it from the matching consumer file:
 ## Git hooks
 
 ```bash
-git config core.hooksPath node_modules/ha-shared/.githooks
+git config core.hooksPath node_modules/ha-card-shared/.githooks
 ```
 
 - `pre-commit` — biome check + prettier (markdown) + typecheck
@@ -56,7 +56,7 @@ Reusable workflows for consumer repos. Pin refs to a release tag — dependabot 
 ```yaml
 jobs:
   build:
-    uses: marcintk/ha-shared/.github/workflows/shared-build-and-test.yml@v1.0.0
+    uses: marcintk/ha-card-shared/.github/workflows/shared-build-and-test.yml@v1.0.0
 ```
 
 ## Migrating consumers
@@ -65,7 +65,9 @@ Step-by-step migrations live in [`recipes/`](recipes/), one file per version tra
 
 - [`recipe.SHA_1.00.md`](recipes/recipe.SHA_1.00.md) — SHA/`main` → v1.0.0.
 
-## Releasing ha-shared
+After migrating, keep consumers current automatically: [`recipes/dependabot.md`](recipes/dependabot.md).
+
+## Releasing ha-card-shared
 
 Tag-driven. Every change reaches `main` through a PR, where `self-check.yml` runs actionlint,
 shellcheck, and the smoke build. Pushing a `vX.Y.Z` tag then runs `release.yml`, which validates the
