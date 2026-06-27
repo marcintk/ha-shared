@@ -2,7 +2,7 @@ import nodeResolve from "@rollup/plugin-node-resolve";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
 
-export function cardBundle({ name }) {
+export function cardBundle({ name = process.env.npm_package_name } = {}) {
   const version = process.env.VERSION ?? "0.0.0-dev";
   return {
     input: "src/index.ts",
