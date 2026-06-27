@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
         CURR="${GITHUB_REF_NAME#v}"
-        PREV=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -v "^${GITHUB_REF_NAME}$" | head -1)
+        PREV=$(git tag --sort=-version:refname | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | grep -v "^${GITHUB_REF_NAME}$" | head -1 || true)
         if [ -z "$PREV" ]; then
           echo "No previous release tag found — first release, proceeding."
           exit 0
